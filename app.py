@@ -21,7 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # CORS configuration
-CORS(app, supports_credentials=True, origins=[os.environ.get('FRONTEND_URL', 'http://localhost:5000')])
+CORS(app, supports_credentials=True)
 
 db.init_app(app)
 
