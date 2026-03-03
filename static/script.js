@@ -133,7 +133,7 @@ async function toggleTask(taskId) {
     if (!task) return;
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, {
+        const response = await fetch(`/api/tasks/${taskId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -157,7 +157,7 @@ async function toggleTask(taskId) {
 
 async function deleteTask(taskId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, {
+        const response = await fetch(`/api/tasks/${taskId}`, {
             method: 'DELETE',
             credentials: 'same-origin'
         });
