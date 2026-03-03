@@ -7,85 +7,99 @@ const loginError = document.getElementById('login-error');
 const registerError = document.getElementById('register-error');
 
 // Toggle between login and register forms
-showRegister.addEventListener('click', (e) => {
-    e.preventDefault();
-    loginForm.classList.add('hidden');
-    registerForm.classList.remove('hidden');
-    loginError.textContent = '';
-});
+if (showRegister) {
+    showRegister.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        if (loginError) loginError.textContent = '';
+    });
+}
 
-showLogin.addEventListener('click', (e) => {
-    e.preventDefault();
-    registerForm.classList.add('hidden');
-    loginForm.classList.remove('hidden');
-    registerError.textContent = '';
-});
+if (showLogin) {
+    showLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        registerForm.classList.add('hidden');
+        loginForm.classList.remove('hidden');
+        if (registerError) registerError.textContent = '';
+    });
+}
 
 // Handle Login
-document.getElementById('login-btn').addEventListener('click', async () => {
-    const errorMessage = document.getElementById('error-message');
-    errorMessage.textContent = '';
-    
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-    
-    try {
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify({ username, password })
-        });
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (loginError) loginError.textContent = '';
         
-        const data = await response.json();
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
         
-        if (response.ok) {
-            window.location.href = '/';
-        } else {
-            errorMessage.textContent = data.error || 'Login failed';
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                if (loginError) loginError.textContent = data.error || 'Login failed';
+            }
+        } catch (error) {
+            if (loginError) loginError.textContent = 'An error occurred. Please try again.';
         }
-    } catch (error) {
-        errorMessage.textContent = 'An error occurred. Please try again.';
-    }
-});
+    });
+}
 
 // Handle Register
-document.getElementById('register-btn').addEventListener('click', async () => {
-    const errorMessage = document.getElementById('error-message');
-    errorMessage.textContent = '';
-    
-    const username = document.getElementById('register-username').value;
-    const email = document.getElementById('register-email').value;
-    const password = document.getElementById('register-password').value;
-    
-    if (password.length < 6) {
-        errorMessage.textContent = 'Password must be at least 6 characters';
-        return;
-    }
-    
-    try {
-        const response = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify({ username, email, password })
-        });
+if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (registerError) registerError.textContent = '';
         
-        const data = await response.json();
+        const username = document.getElementById('register-username').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const confirm = document.getElementById('register-confirm').value;
         
-        if (response.ok) {
-            window.location.href = '/';
-        } else {
-            errorMessage.textContent = data.error || 'Registration failed';
+        if (password !== confirm) {
+            if (registerError) registerError.textContent = 'Passwords do not match';
+            return;
         }
-    } catch (error) {
-        errorMessage.textContent = 'An error occurred. Please try again.';
-    }
-});
+        
+        if (password.length < 6) {
+            if (registerError) registerError.textContent = 'Password must be at least 6 characters';
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ username, email, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                if (registerError) registerError.textContent = data.error || 'Registration failed';
+            }
+        } catch (error) {
+            if (registerError) registerError.textContent = 'An error occurred. Please try again.';
+        }
+    });
+}
 
 // Check if already logged in on page load
 document.addEventListener('DOMContentLoaded', async () => {
