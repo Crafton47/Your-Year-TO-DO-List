@@ -1,5 +1,3 @@
-import API_BASE_URL from './config.js';
-
 // DOM Elements
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
@@ -32,7 +30,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     const password = document.getElementById('login-password').value;
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -44,7 +42,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         const data = await response.json();
         
         if (response.ok) {
-            window.location.href = '/app';
+            window.location.href = '/';
         } else {
             errorMessage.textContent = data.error || 'Login failed';
         }
@@ -68,7 +66,7 @@ document.getElementById('register-btn').addEventListener('click', async () => {
     }
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+        const response = await fetch('/api/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -80,7 +78,7 @@ document.getElementById('register-btn').addEventListener('click', async () => {
         const data = await response.json();
         
         if (response.ok) {
-            window.location.href = '/app';
+            window.location.href = '/';
         } else {
             errorMessage.textContent = data.error || 'Registration failed';
         }
@@ -92,11 +90,11 @@ document.getElementById('register-btn').addEventListener('click', async () => {
 // Check if already logged in on page load
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/check`, { credentials: 'include' });
+        const response = await fetch('/api/auth/check', { credentials: 'include' });
         const data = await response.json();
         
         if (data.logged_in) {
-            window.location.href = '/app';
+            window.location.href = '/';
         }
     } catch (error) {
         console.error('Auth check failed:', error);
