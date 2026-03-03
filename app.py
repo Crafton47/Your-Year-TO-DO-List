@@ -1,18 +1,24 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask_cors import CORS
 from database import db, User, Task
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Secret key for sessions
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.dirname(__file__), 'instance', 'todo.db')
+app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///' + os.path.join(os.path.dirname(__file__), 'instance', 'todo.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# CORS configuration
+CORS(app, supports_credentials=True, origins=[os.environ.get('FRONTEND_URL', 'http://localhost:5000')])
+
 db.init_app(app)
 
 # Create database tables
 with app.app_context():
-    # Drop all tables and recreate to fix schema issues
-    db.drop_all()
     db.create_all()
 
 @app.route('/')
@@ -150,4 +156,5 @@ def delete_task(task_id):
     return jsonify({'message': 'Task deleted successfully'})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=os.environ.get('DEBUG', 'False') == 'True')
