@@ -1,12 +1,6 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://your-year-to-do-list.onrender.com/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/templates/$1"
-    }
+  "routes": [
+    { "src": "/app", "dest": "/app.html" },
+    { "src": "/", "dest": "/index.html" }
   ]
 }

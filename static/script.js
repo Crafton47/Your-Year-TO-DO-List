@@ -1,3 +1,5 @@
+import API_BASE_URL from './config.js';
+
 const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -52,7 +54,7 @@ logoutBtn.addEventListener('click', logout);
 // Auth Functions
 async function checkAuth() {
     try {
-        const response = await fetch('/api/auth/check', { credentials: 'same-origin' });
+        const response = await fetch(`${API_BASE_URL}/api/auth/check`, { credentials: 'same-origin' });
         const data = await response.json();
         
         if (!data.logged_in) {
@@ -71,7 +73,7 @@ async function checkAuth() {
 
 async function logout() {
     try {
-        await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+        await fetch(`${API_BASE_URL}/api/auth/logout`, { method: 'POST', credentials: 'same-origin' });
         sessionStorage.clear();
         window.location.href = '/';
     } catch (error) {
@@ -82,7 +84,7 @@ async function logout() {
 // API Functions
 async function loadTasks() {
     try {
-        const response = await fetch(`/api/tasks/${currentYear}`, { credentials: 'same-origin' });
+        const response = await fetch(`${API_BASE_URL}/api/tasks/${currentYear}`, { credentials: 'same-origin' });
         if (response.status === 401) {
             window.location.href = '/';
             return;
@@ -97,7 +99,7 @@ async function loadTasks() {
 async function createTask(description) {
     console.log('Creating task:', { year: currentYear, month: currentMonth, description: description });
     try {
-        const response = await fetch('/api/tasks', {
+        const response = await fetch(`${API_BASE_URL}/api/tasks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -133,7 +135,7 @@ async function toggleTask(taskId) {
     if (!task) return;
     
     try {
-        const response = await fetch(`/api/tasks/${taskId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -157,7 +159,7 @@ async function toggleTask(taskId) {
 
 async function deleteTask(taskId) {
     try {
-        const response = await fetch(`/api/tasks/${taskId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, {
             method: 'DELETE',
             credentials: 'same-origin'
         });

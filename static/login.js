@@ -1,3 +1,5 @@
+import API_BASE_URL from './config.js';
+
 // DOM Elements
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
@@ -22,87 +24,79 @@ showLogin.addEventListener('click', (e) => {
 });
 
 // Handle Login
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    loginError.textContent = '';
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.textContent = '';
     
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
-    const remember = document.getElementById('remember-me').checked;
     
     try {
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, password, remember })
+            credentials: 'include',
+            body: JSON.stringify({ username, password })
         });
         
         const data = await response.json();
         
         if (response.ok) {
-            window.location.href = '/';
+            window.location.href = '/app';
         } else {
-            loginError.textContent = data.error || 'Login failed';
+            errorMessage.textContent = data.error || 'Login failed';
         }
     } catch (error) {
-        loginError.textContent = 'An error occurred. Please try again.';
+        errorMessage.textContent = 'An error occurred. Please try again.';
     }
 });
 
 // Handle Register
-registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    registerError.textContent = '';
+document.getElementById('register-btn').addEventListener('click', async () => {
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.textContent = '';
     
     const username = document.getElementById('register-username').value;
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
-    const confirm = document.getElementById('register-confirm').value;
     
-    // Validate passwords match
-    if (password !== confirm) {
-        registerError.textContent = 'Passwords do not match';
-        return;
-    }
-    
-    // Validate password length
     if (password.length < 6) {
-        registerError.textContent = 'Password must be at least 6 characters';
+        errorMessage.textContent = 'Password must be at least 6 characters';
         return;
     }
     
     try {
-        const response = await fetch('/api/auth/register', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({ username, email, password })
         });
         
         const data = await response.json();
         
         if (response.ok) {
-            window.location.href = '/';
+            window.location.href = '/app';
         } else {
-            registerError.textContent = data.error || 'Registration failed';
+            errorMessage.textContent = data.error || 'Registration failed';
         }
     } catch (error) {
-        registerError.textContent = 'An error occurred. Please try again.';
+        errorMessage.textContent = 'An error occurred. Please try again.';
     }
 });
 
 // Check if already logged in on page load
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('/api/auth/check');
+        const response = await fetch(`${API_BASE_URL}/api/auth/check`, { credentials: 'include' });
         const data = await response.json();
         
         if (data.logged_in) {
-            // Already logged in, redirect to main app
-            window.location.href = '/';
+            window.location.href = '/app';
         }
     } catch (error) {
         console.error('Auth check failed:', error);

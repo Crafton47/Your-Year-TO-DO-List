@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year Plan To Do List</title>
+    <link rel="stylesheet" href="static/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-card">
+            <h1 class="app-title">📅 Year Plan</h1>
+            <p class="subtitle">Plan your year, month by month</p>
+            
+            <div id="login-form" class="auth-form">
+                <h2>Login</h2>
+                <input type="text" id="login-username" placeholder="Username" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="login-btn" class="btn btn-primary">Login</button>
+                <p class="switch-text">Don't have an account? <a href="#" id="show-register">Register</a></p>
+            </div>
+            
+            <div id="register-form" class="auth-form" style="display: none;">
+                <h2>Register</h2>
+                <input type="text" id="register-username" placeholder="Username" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <button id="register-btn" class="btn btn-primary">Register</button>
+                <p class="switch-text">Already have an account? <a href="#" id="show-login">Login</a></p>
+            </div>
+            
+            <div id="error-message" class="error-message"></div>
+        </div>
+    </div>
+    
+    <script type="module" src="static/login.js"></script>
+</body>
+</html>

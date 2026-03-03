@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year Plan To Do List</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="app-title">📅 Year Plan To Do List</h1>
+            <div class="header-controls">
+                <span class="username" id="username-display"></span>
+                <select id="year-select" class="year-select">
+                    <option value="2024">2024</option>
+                    <option value="2025" selected>2025</option>
+                    <option value="2026">2026</option>
+                </select>
+                <button id="logout-btn" class="btn btn-secondary">Logout</button>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <div id="months-grid" class="months-grid"></div>
+        </main>
+    </div>
+    
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <h2 id="modal-title">Add Task</h2>
+            <input type="text" id="task-input" class="task-input" placeholder="Enter task description..." maxlength="200">
+            <div class="modal-actions">
+                <button id="cancel-btn" class="btn btn-secondary">Cancel</button>
+                <button id="save-btn" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="static/script.js"></script>
+</body>
+</html>
